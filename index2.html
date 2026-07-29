@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(135deg,
+          #ebc8d0 0%,
+          #FFD6E8 45%,
+          #FCE4F6 100%);
+    }
+
+    .main-one {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .yes-button {
+      background: #F8B4B4;
+      --direction: -50px;
+      color: #CFE8FF;
+      transition: transform 3s;
+    }
+
+    .no-button {
+      position: fixed;
+      background: #CFE8FF;
+      color: #F8B4B4;
+    }
+
+    .yes-button,
+    .no-button {
+      border: 1px gray solid;
+      height: 90px;
+      width: 100px;
+      margin: 0px 10px;
+      border-radius: 15px;
+      font-size: 28px;
+    }
+
+    .text-div {
+      position: fixed;
+      top: 100px;
+      left: auto;
+      right: auto;
+      border: 2px solid lightblue;
+      width: 800px;
+      height: 80px;
+      background: lightsalmon;
+      font-size: 40px;
+      text-align: center;
+      padding-top: 30px;
+      color: rgb(0, 45, 248);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-one">
+    <div class="text-div">ایا با من دیت میای ؟</div>
+    <div class="yes"><button class="yes-button">اره</button></div>
+    <div class="no"><button class="no-button">نچ</button></div>
+
+  </div>
+
+
+
+  <script>
+    let yes = document.querySelector('.yes-button');
+    let no = document.querySelector('.no-button');
+
+    yes.addEventListener('click', () => {
+      alert('با تشکر زمان دیت برای شما ارسال میشود (×-|-×)')
+    })
+
+
+
+    function runAway(x, y) {
+      const rect = no.getBoundingClientRect();
+
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      const distance = Math.hypot(x - centerX, y - centerY);
+
+      // از فاصله زیاد هم فرار کنه
+      if (distance < 250) {
+
+        let newX = Math.random() * (window.innerWidth - no.offsetWidth);
+        let newY = Math.random() * (window.innerHeight - no.offsetHeight);
+
+        // اگر دوباره نزدیک انگشت یا موس افتاد، دوباره جای جدید انتخاب کن
+        while (Math.hypot(newX - x, newY - y) < 250) {
+          newX = Math.random() * (window.innerWidth - no.offsetWidth);
+          newY = Math.random() * (window.innerHeight - no.offsetHeight);
+        }
+
+        no.style.left = `${newX}px`;
+        no.style.top = `${newY}px`;
+      }
+    }
+    const rect = no.getBoundingClientRect();
+    no.style.left = rect.left + "px";
+    no.style.top = rect.top + "px";
+    // کامپیوتر
+    document.addEventListener("mousemove", (e) => {
+      runAway(e.clientX, e.clientY);
+    });
+
+    // گوشی
+    document.addEventListener("touchmove", (e) => {
+      const touch = e.touches[0];
+      runAway(touch.clientX, touch.clientY);
+    });
+
+    // اگر مستقیم روی دکمه لمس شد، باز هم فرار کن
+    no.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+
+      runAway(
+        e.touches[0].clientX,
+        e.touches[0].clientY
+      );
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
